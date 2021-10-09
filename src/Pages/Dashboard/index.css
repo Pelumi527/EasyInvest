@@ -1,0 +1,15 @@
+.bg-img {
+background-image: url('./assets/spiral.svg');
+width:30rem;
+width: 100%;
+background-repeat: no-repeat;
+background-size: contain;
+border: 1px solid red;
+
+}
+
+.imgg{
+  max-width:60%;
+object-fit: scale-down;
+border: 1px solid salmon;
+}
