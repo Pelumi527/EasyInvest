@@ -66,6 +66,7 @@ function index() {
         <Button className=''>Send</Button>
         <Button className=''>Receive</Button>
       </div>
+      
       <div className='p-0'>
         <div className=''></div>
         <Image>      
