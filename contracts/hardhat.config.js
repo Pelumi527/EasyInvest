@@ -1,3 +1,5 @@
+<<<<<<< HEAD
+=======
 
 
 // You need to export an object to set up your config
@@ -9,6 +11,7 @@
 module.exports = {
   solidity: "0.8.4",
 };
+>>>>>>> f040aa59184bc99e0bd2870ef9dc894c9a8e4d8e
 require("dotenv").config();
 
 require("@nomiclabs/hardhat-etherscan");
@@ -33,6 +36,32 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
  * @type import('hardhat/config').HardhatUserConfig
  */
 module.exports = {
+<<<<<<< HEAD
+  solidity:"0.8.3",
+  // solidity: {
+  //   compilers: [
+  //     {
+  //       version: "0.6.6",
+  //     },
+  //     {
+  //       version: "0.7.0",
+  //     },
+  //     {
+  //       version: "0.8.0",
+  //       settings: {}
+  //     }
+  //   ]
+  // },
+  networks: {
+    hardhat: {
+      initialBaseFeePerGas: 0, // workaround from https://github.com/sc-forks/solidity-coverage/issues/652#issuecomment-896330136 . Remove when that issue is closed.
+    },
+    // ropsten: {
+    //   url: process.env.ROPSTEN_URL || "",
+    //   accounts:
+    //     process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+    // },
+=======
   solidity: "0.8.4",
   networks: {
     
@@ -54,6 +83,7 @@ module.exports = {
    
       
     
+>>>>>>> f040aa59184bc99e0bd2870ef9dc894c9a8e4d8e
   },
   gasReporter: {
     enabled: process.env.REPORT_GAS !== undefined,
@@ -62,7 +92,11 @@ module.exports = {
   etherscan: {
     apiKey: process.env.ETHERSCAN_API_KEY,
   },
+<<<<<<< HEAD
+};
+=======
 };
 
 
 
+>>>>>>> f040aa59184bc99e0bd2870ef9dc894c9a8e4d8e

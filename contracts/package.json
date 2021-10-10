@@ -23,7 +23,28 @@
     "solidity-coverage": "^0.7.17"
   },
   "dependencies": {
+<<<<<<< HEAD
+    "@openzeppelin/contracts": "^4.3.2",
+    "@superfluid-finance/ethereum-contracts": "^1.0.0-rc.7",
+    "@uniswap/v2-core": "^1.0.1",
+    "@uniswap/v2-periphery": "^1.1.0-beta.0",
+    "yarn": "^1.22.11"
+  },
+  "description": "This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts.",
+  "version": "1.0.0",
+  "main": "hardhat.config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+=======
     "@openzeppelin/contracts": "^4.3.1",
     "yarn": "^1.22.11"
   }
+>>>>>>> f040aa59184bc99e0bd2870ef9dc894c9a8e4d8e
 }

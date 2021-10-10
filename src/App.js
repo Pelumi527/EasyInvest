@@ -1,16 +1,15 @@
 import Home from "./Pages/Home";
-import Navbar from "./components/Navbar";
+import {Route } from 'react-router-dom';
+import Layout from "./components/Layout";
 import DashBoard from "./Pages/Dashboard";
-import Footer from "./components/Footer";
 
 function App() {
+
   return (
-    <div>
-      <Navbar />
-      {/* <DashBoard /> */}
-      <Home />
-      <Footer />
-    </div>
+    <Layout>
+      <Route exact path="/" component={Home} />
+      <Route path="/dashboard" component={DashBoard} />
+    </Layout>
   );
 }
 

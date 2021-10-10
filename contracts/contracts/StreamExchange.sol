@@ -114,6 +114,9 @@ contract StreamExchange is Ownable, SuperAppBase {
         _exchange.lastDistributionAt = block.timestamp;
     }
 
+<<<<<<< HEAD
+    
+=======
     /**************************************************************************
      * Stream Exchange Logic
      *************************************************************************/
@@ -365,5 +368,6 @@ contract StreamExchange is Ownable, SuperAppBase {
     _;
   }
 
+>>>>>>> f040aa59184bc99e0bd2870ef9dc894c9a8e4d8e
 
   }
