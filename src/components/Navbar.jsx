@@ -6,8 +6,16 @@ import { IoSettings } from "react-icons/io5";
 import { RiContrast2Line } from "react-icons/ri";
 import { RiArrowLeftRightFill } from "react-icons/ri";
 import { FaBell } from "react-icons/fa";
+import { useEagerConnect } from "../hooks/UseEagerConnect";
 
 const Navbar = () => {
+
+
+  const handleConnect =async ()=> {
+    let result  = await window.ethereum.request({ method: 'eth_requestAccounts' })
+       console.log(result)
+    return   result
+  }
   return (
     <div>
       <Container>
@@ -46,7 +54,8 @@ const Navbar = () => {
             <FaBell size={30} />
           </a>
         </MenuLink>
-        <Button>Connect Wallet</Button>
+         
+        <Button onClick ={handleConnect}>Connect Wallet</Button>
       </Container>
     </div>
   );
