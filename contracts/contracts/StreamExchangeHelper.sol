@@ -109,8 +109,13 @@ library StreamExchangeHelper {
         address(factory),
         ISuperToken(self.inputToken).balanceOf(address(this)),
         path)[0];
+<<<<<<< HEAD
       // if (_value > 0) return (true, _value, _time);
       // return (false, 0, _time);
+=======
+      if (_value > 0) return (true, _value, _time);
+      return (false, 0, _time);
+>>>>>>> f040aa59184bc99e0bd2870ef9dc894c9a8e4d8e
   }
 
 

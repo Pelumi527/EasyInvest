@@ -1,3 +1,17 @@
+<<<<<<< HEAD
+=======
+
+
+// You need to export an object to set up your config
+// Go to https://hardhat.org/config/ to learn more
+
+/**
+ * @type import('hardhat/config').HardhatUserConfig
+ */
+module.exports = {
+  solidity: "0.8.4",
+};
+>>>>>>> f040aa59184bc99e0bd2870ef9dc894c9a8e4d8e
 require("dotenv").config();
 
 require("@nomiclabs/hardhat-etherscan");
@@ -22,6 +36,7 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
  * @type import('hardhat/config').HardhatUserConfig
  */
 module.exports = {
+<<<<<<< HEAD
   solidity:"0.8.3",
   // solidity: {
   //   compilers: [
@@ -46,6 +61,29 @@ module.exports = {
     //   accounts:
     //     process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     // },
+=======
+  solidity: "0.8.4",
+  networks: {
+    
+    hardhat: {
+      // forking: {
+      //   url: "https://eth-mainnet.alchemyapi.io/v2/Sm9Z1X4Lkm9334MYxgV_ULOeL5bX5lbA"
+      // },
+      initialBaseFeePerGas: 0, // workaround from https://github.com/sc-forks/solidity-coverage/issues/652#issuecomment-896330136 . Remove when that issue is closed.
+    },
+    rinkeby: {
+      url:process.env.rinkeby_URL,
+      accounts:[process.env.PRIVATE_KEY],
+    },
+    ropsten: {
+      url:process.env.rinkeby_URL,
+      accounts:[process.env.PRIVATE_KEY],
+    }
+    
+   
+      
+    
+>>>>>>> f040aa59184bc99e0bd2870ef9dc894c9a8e4d8e
   },
   gasReporter: {
     enabled: process.env.REPORT_GAS !== undefined,
@@ -54,4 +92,11 @@ module.exports = {
   etherscan: {
     apiKey: process.env.ETHERSCAN_API_KEY,
   },
+<<<<<<< HEAD
 };
+=======
+};
+
+
+
+>>>>>>> f040aa59184bc99e0bd2870ef9dc894c9a8e4d8e

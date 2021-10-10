@@ -15,6 +15,7 @@ async function main() {
   // await hre.run('compile');
 
   // We get the contract to deploy
+<<<<<<< HEAD
   const StreamExchange = await hre.ethers.getContractFactory("StreamExchange");
   const streamExchange = await StreamExchange.deploy();
 
@@ -22,6 +23,15 @@ async function main() {
   
 
   console.log("streamer exchange deployed to:", streamExchange.address);
+=======
+  const Greeter = await hre.ethers.getContractFactory("toks");
+  const greeter = await Greeter.deploy();
+
+  await greeter.deployed();
+  
+
+  console.log("Greeter deployed to:", greeter.address);
+>>>>>>> f040aa59184bc99e0bd2870ef9dc894c9a8e4d8e
 }
 
 // We recommend this pattern to be able to use async/await everywhere

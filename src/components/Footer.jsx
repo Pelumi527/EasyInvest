@@ -56,6 +56,7 @@ export default Footer;
 
 export const Box = styled.div`
   padding: 80px 60px;
+  padding-top:8rem;
   background: #f8f8f8;
   bottom: 0;
   width: 100%;

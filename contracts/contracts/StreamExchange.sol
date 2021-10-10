@@ -114,6 +114,260 @@ contract StreamExchange is Ownable, SuperAppBase {
         _exchange.lastDistributionAt = block.timestamp;
     }
 
+<<<<<<< HEAD
     
+=======
+    /**************************************************************************
+     * Stream Exchange Logic
+     *************************************************************************/
+
+    /// @dev If a new stream is opened, or an existing one is opened
+  function _updateOutflow(bytes calldata ctx, bytes calldata agreementData, bool doDistributeFirst)
+      private
+      returns (bytes memory newCtx)
+  {
+
+    newCtx = ctx;
+
+    (, , uint128 totalUnitsApproved, uint128 totalUnitsPending) = _exchange.ida.getIndex(
+      _exchange.outputToken,
+      address(this),
+      _exchange.outputIndexId);
+    // Check balance and account for
+    uint256 balance = ISuperToken(_exchange.inputToken).balanceOf(address(this)) /
+                      (10 ** (18 - ERC20(_exchange.inputToken.getUnderlyingToken()).decimals()));
+
+    if (doDistributeFirst && totalUnitsApproved + totalUnitsPending > 0 && balance > 0) {
+      newCtx = _exchange._distribute(newCtx);
+    }
+
+    (address requester, address flowReceiver) = abi.decode(agreementData, (address, address));
+    require(flowReceiver == address(this), "!appflow");
+    int96 appFlowRate = _exchange.cfa.getNetFlow(_exchange.inputToken, address(this));
+    (, int96 requesterFlowRate, , ) = _exchange.cfa.getFlow(_exchange.inputToken, requester, address(this));
+
+    // Make sure the requester has at least 8 hours of balance to stream
+    require(int(_exchange.inputToken.balanceOf(requester)) >= requesterFlowRate * 8 hours, "!enoughTokens");
+
+    require(requesterFlowRate >= 0, "!negativeRates");
+    newCtx = _exchange._updateSubscriptionWithContext(newCtx, _exchange.outputIndexId, requester, uint128(uint(int(requesterFlowRate))), _exchange.outputToken);
+    newCtx = _exchange._updateSubscriptionWithContext(newCtx, _exchange.subsidyIndexId, requester, uint128(uint(int(requesterFlowRate))), _exchange.subsidyToken);
+
+    emit UpdatedStream(requester, requesterFlowRate, appFlowRate);
+
+  }
+
+
+  function distribute() external {
+   _exchange._distribute(new bytes(0));
+  }
+
+  function closeStream(address streamer) public {
+    _exchange._closeStream(streamer);
+  }
+
+  function emergencyCloseStream(address streamer) public {
+    _exchange._emergencyCloseStream(streamer);
+  }
+
+  function emergencyDrain() public {
+    _exchange._emergencyDrain();
+  }
+
+  function setSubsidyRate(uint128 subsidyRate) external onlyOwner {
+    _exchange.subsidyRate = subsidyRate;
+  }
+
+  function setFeeRate(uint128 feeRate) external onlyOwner {
+    _exchange.feeRate = feeRate;
+  }
+
+  function setRateTolerance(uint128 rateTolerance) external onlyOwner {
+    _exchange.rateTolerance = rateTolerance;
+  }
+
+  // function setOracle(address oracle) external onlyOwner {
+  //   _exchange.oracle = ITellor(oracle);
+  // }
+
+  // function setRequestId(uint256 requestId) external onlyOwner {
+  //   _exchange.requestId = requestId;
+  // }
+
+  function isAppJailed() external view returns (bool) {
+   return _exchange.host.isAppJailed(this);
+  }
+
+  function getIDAShares(uint32 index, address streamer) external view returns (bool exist,
+                bool approved,
+                uint128 units,
+                uint256 pendingDistribution) {
+
+    ISuperToken idaToken;
+    if(index == _exchange.outputIndexId) {
+
+      idaToken = _exchange.outputToken;
+
+    } else if (index == _exchange.subsidyIndexId) {
+
+      idaToken = _exchange.subsidyToken;
+
+    } else {
+      return (exist, approved, units, pendingDistribution);
+    }
+
+    (exist, approved, units, pendingDistribution) = _exchange.ida.getSubscription(
+                                                                  idaToken,
+                                                                  address(this),
+                                                                  index,
+                                                                  streamer);
+  }
+
+  function getInputToken() external view returns (ISuperToken) {
+   return _exchange.inputToken;
+  }
+
+  function getOutputToken() external view returns (ISuperToken) {
+   return _exchange.outputToken;
+  }
+
+  function getOutputIndexId() external view returns (uint32) {
+   return _exchange.outputIndexId;
+  }
+
+  function getSubsidyToken() external view returns (ISuperToken) {
+   return _exchange.subsidyToken;
+  }
+
+  function getSubsidyIndexId() external view returns (uint32) {
+   return _exchange.subsidyIndexId;
+  }
+
+  function getSubsidyRate() external view returns (uint256) {
+    return _exchange.subsidyRate;
+  }
+
+  function getTotalInflow() external view returns (int96) {
+    return _exchange.cfa.getNetFlow(_exchange.inputToken, address(this));
+  }
+
+  function getLastDistributionAt() external view returns (uint256) {
+    return _exchange.lastDistributionAt;
+  }
+
+  function getSushiRouter() external view returns (address) {
+    return address(_exchange.sushiRouter);
+  }
+
+  // function getTellorOracle() external view returns (address) {
+  //   return address(_exchange.oracle);
+  // }
+
+  // function getRequestId() external view returns (uint256) {
+  //   return _exchange.requestId;
+  }
+
+  function getOwner() external view returns (address) {
+    return _exchange.owner;
+  }
+
+  function getFeeRate() external view returns (uint128) {
+    return _exchange.feeRate;
+  }
+
+  function getRateTolerance() external view returns (uint256) {
+    return _exchange.rateTolerance;
+  }
+
+  function getStreamRate(address streamer) external view returns (int96 requesterFlowRate) {
+    (, requesterFlowRate, , ) = _exchange.cfa.getFlow(_exchange.inputToken, streamer, address(this));
+  }
+
+
+
+  /**
+     * @dev Transfers ownership of the contract to a new account (`newOwner`).
+     * Can only be called by the current owner.
+     * NOTE: Override this to add changing the
+     */
+    function transferOwnership(address newOwner) public virtual override onlyOwner {
+        super.transferOwnership(newOwner);
+        _exchange.owner = newOwner;
+    }
+
+  /**************************************************************************
+   * SuperApp callbacks
+   *************************************************************************/
+
+  function afterAgreementCreated(
+      ISuperToken _superToken,
+      address _agreementClass,
+      bytes32, // _agreementId,
+      bytes calldata _agreementData,
+      bytes calldata ,// _cbdata,
+      bytes calldata _ctx
+  )
+      external override
+      onlyExpected(_superToken, _agreementClass)
+      onlyHost
+      returns (bytes memory newCtx)
+  {
+      if (!_exchange._isInputToken(_superToken) || !_exchange._isCFAv1(_agreementClass)) return _ctx;
+      return _updateOutflow(_ctx, _agreementData, true);
+  }
+
+  function afterAgreementUpdated(
+      ISuperToken _superToken,
+      address _agreementClass,
+      bytes32 ,//_agreementId,
+      bytes calldata _agreementData,
+      bytes calldata ,//_cbdata,
+      bytes calldata _ctx
+  )
+      external override
+      onlyExpected(_superToken, _agreementClass)
+      onlyHost
+      returns (bytes memory newCtx)
+  {
+      if (!_exchange._isInputToken(_superToken) || !_exchange._isCFAv1(_agreementClass)) return _ctx;
+      return _updateOutflow(_ctx, _agreementData, true);
+  }
+
+  function afterAgreementTerminated(
+      ISuperToken _superToken,
+      address _agreementClass,
+      bytes32 ,//_agreementId,
+      bytes calldata _agreementData,
+      bytes calldata ,//_cbdata,
+      bytes calldata _ctx
+  )
+      external override
+      onlyHost
+      returns (bytes memory newCtx)
+  {
+      console.log("afterAgreementTerminated");
+      // According to the app basic law, we should never revert in a termination callback
+      if (!_exchange._isInputToken(_superToken) || !_exchange._isCFAv1(_agreementClass)) return _ctx;
+      // Skip distribution when terminating to avoid reverts
+      return _updateOutflow(_ctx, _agreementData, false);
+  }
+
+
+
+  modifier onlyHost() {
+      require(msg.sender == address(_exchange.host), "one host");
+      _;
+  }
+
+  modifier onlyExpected(ISuperToken superToken, address agreementClass) {
+    if (_exchange._isCFAv1(agreementClass)) {
+      require(_exchange._isInputToken(superToken), "!inputAccepted");
+    } else if (_exchange._isIDAv1(agreementClass)) {
+      require(_exchange._isOutputToken(superToken) || _exchange._isSubsidyToken(superToken), "!outputAccepted");
+    }
+    _;
+  }
+
+>>>>>>> f040aa59184bc99e0bd2870ef9dc894c9a8e4d8e
 
   }

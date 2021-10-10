@@ -1,10 +1,7 @@
-import { useEffect } from "react";
 import Home from "./Pages/Home";
-import Navbar from "./components/Navbar";
-import DashBoard from './Pages/Dashboard'
 import {Route } from 'react-router-dom';
 import Layout from "./components/Layout";
-
+import DashBoard from "./Pages/Dashboard";
 
 function App() {
 
@@ -12,9 +9,6 @@ function App() {
     <Layout>
       <Route exact path="/" component={Home} />
       <Route path="/dashboard" component={DashBoard} />
-     
-      {/* <DashBoard /> */}
-    {/* <Home /> */}
     </Layout>
   );
 }
