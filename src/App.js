@@ -2,20 +2,20 @@ import { useEffect } from "react";
 import Home from "./Pages/Home";
 import Navbar from "./components/Navbar";
 import DashBoard from './Pages/Dashboard'
-import MaticScreen from "./feature/matic";
-import { useEagerConnect } from "./hooks/UseEagerConnect";
+import {Route } from 'react-router-dom';
+import Layout from "./components/Layout";
+
 
 function App() {
-//  useEffect(()=>{
-//    useEagerConnect()
-//  },[])
+
   return (
-    <div>
-      <Navbar />
-      <MaticScreen />
+    <Layout>
+      <Route exact path="/" component={Home} />
+      <Route path="/dashboard" component={DashBoard} />
+     
       {/* <DashBoard /> */}
     {/* <Home /> */}
-    </div>
+    </Layout>
   );
 }
 

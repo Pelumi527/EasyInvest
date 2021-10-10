@@ -6,11 +6,9 @@ import { IoSettings } from "react-icons/io5";
 import { RiContrast2Line } from "react-icons/ri";
 import { RiArrowLeftRightFill } from "react-icons/ri";
 import { FaBell } from "react-icons/fa";
-import { useEagerConnect } from "../hooks/UseEagerConnect";
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
 const Navbar = () => {
-
-
   const handleConnect =async ()=> {
     let result  = await window.ethereum.request({ method: 'eth_requestAccounts' })
        console.log(result)
@@ -28,32 +26,32 @@ const Navbar = () => {
               </a>
             </MenuLink>
             <MenuLink>
-              <a>
+              <Link to ='#'>
                 <RiContrast2Line size={30} />
-              </a>
+              </Link>
             </MenuLink>
             <MenuLink>
-              <a>
+              <Link to ="#">
                 <RiArrowLeftRightFill size={30} />
-              </a>
+              </Link>
             </MenuLink>
             <MenuLink>
-              <a>
+              <Link to ="#">
                 <BsFillPersonFill size={30} />
-              </a>
+              </Link>
             </MenuLink>
             <MenuLink>
-              <a>
+              <Link to ='#'>
                 <IoSettings size={30} />
-              </a>
+              </Link>
             </MenuLink>
           </LinkWrapper>
         </Menu>
-        <MenuLink>
+        {/* <MenuLink>
           <a>
             <FaBell size={30} />
           </a>
-        </MenuLink>
+        </MenuLink> */}
          
         <Button onClick ={handleConnect}>Connect Wallet</Button>
       </Container>
